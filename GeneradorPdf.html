@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Informe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Generar Informe</h1>
+        <form id="reportForm">
+            <div class="mb-3">
+                <label for="sector" class="form-label">Sector</label>
+                <input type="text" class="form-control" id="sector" required>
+            </div>
+            <div class="mb-3">
+                <label for="observation" class="form-label">Observación</label>
+                <textarea class="form-control" id="observation" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="evidence" class="form-label">Evidencia</label>
+                <textarea class="form-control" id="evidence" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Subir Imagen</label>
+                <input type="file" class="form-control" id="image" accept="image/*" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="generatePDF()">Generar PDF</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        async function generatePDF() {
+            const sector = document.getElementById('sector').value;
+            const observation = document.getElementById('observation').value;
+            const evidence = document.getElementById('evidence').value;
+            const imageFile = document.getElementById('image').files[0];
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const imageData = event.target.result;
+
+                const doc = new jsPDF();
+
+                doc.text("Informe de Sector", 10, 10);
+                doc.text(`Sector: ${sector}`, 10, 20);
+                doc.text(`Observación: ${observation}`, 10, 30);
+                doc.text(`Evidencia: ${evidence}`, 10, 40);
+
+                doc.addImage(imageData, 'JPEG', 10, 50, 180, 160);
+
+                doc.save("informe.pdf");
+            };
+
+            reader.readAsDataURL(imageFile);
+        }
+    </script>
+</body>
+</html>
