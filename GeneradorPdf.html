@@ -8,10 +8,29 @@
     <style>
         body {
             padding: 20px;
+            background-color: #f8f9fa;
         }
         .container {
             max-width: 600px;
             margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
         }
     </style>
 </head>
@@ -56,12 +75,35 @@
 
                 const doc = new jsPDF();
 
-                doc.text("Informe de Sector", 10, 10);
-                doc.text(`Sector: ${sector}`, 10, 20);
-                doc.text(`Observación: ${observation}`, 10, 30);
-                doc.text(`Evidencia: ${evidence}`, 10, 40);
+                // Añadir un título estilizado
+                doc.setFontSize(22);
+                doc.setTextColor(0, 123, 255);
+                doc.text("Informe de Sector", 105, 20, null, null, "center");
 
-                doc.addImage(imageData, 'JPEG', 10, 50, 180, 160);
+                // Añadir detalles con estilo
+                doc.setFontSize(16);
+                doc.setTextColor(40, 40, 40);
+                doc.text(`Sector:`, 10, 40);
+                doc.setFontSize(14);
+                doc.text(sector, 10, 50);
+
+                doc.setFontSize(16);
+                doc.text(`Observación:`, 10, 70);
+                doc.setFontSize(14);
+                doc.text(observation, 10, 80);
+
+                doc.setFontSize(16);
+                doc.text(`Evidencia:`, 10, 100);
+                doc.setFontSize(14);
+                doc.text(evidence, 10, 110);
+
+                // Añadir imagen con borde
+                doc.addImage(imageData, 'JPEG', 10, 130, 180, 100, null, 'FAST');
+
+                // Añadir pie de página
+                doc.setFontSize(10);
+                doc.setTextColor(150, 150, 150);
+                doc.text("Generado por el sistema de informes", 105, 290, null, null, "center");
 
                 doc.save("informe.pdf");
             };
