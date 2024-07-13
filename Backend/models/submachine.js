@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    const Observation = sequelize.define('Observation', {
-      note: {
+    const Submachine = sequelize.define('Submachine', {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -8,12 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      submachineId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
     });
   
-    return Observation;
+    return Submachine;
   };
-  

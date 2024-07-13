@@ -13,6 +13,7 @@ db.sequelize = sequelize;
 
 db.User = require('./user')(sequelize, Sequelize);
 db.Machine = require('./machine')(sequelize, Sequelize);
+db.Submachine = require('./submachine')(sequelize, Sequelize);
 db.Task = require('./task')(sequelize, Sequelize);
 db.Observation = require('./observation')(sequelize, Sequelize);
 db.Photo = require('./photo')(sequelize, Sequelize);

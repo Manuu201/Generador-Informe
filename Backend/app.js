@@ -9,13 +9,14 @@ const observationRoutes = require('./routes/observationRoutes');
 const photoRoutes = require('./routes/photoRoutes');
 const lineRoutes = require('./routes/lineRoutes');
 const specialistRoutes = require('./routes/specialistRoutes');
-
+const submachineRoutes = require('./routes/submachineRoutes')
 const app = express();
 
 app.use(bodyParser.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/machines', machineRoutes);
+app.use('/api/submachines', submachineRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/observations', observationRoutes);
 app.use('/api/photos', photoRoutes);
