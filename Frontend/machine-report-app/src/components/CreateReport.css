@@ -1,0 +1,31 @@
+.create-report {
+    margin: 20px;
+  }
+  
+  .create-report form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-report label {
+    margin-bottom: 10px;
+  }
+  
+  .create-report select,
+  .create-report textarea {
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .create-report button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .create-report button:hover {
+    background-color: #0056b3;
+  }
+  

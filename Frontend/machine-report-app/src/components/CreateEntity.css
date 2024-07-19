@@ -1,0 +1,38 @@
+/* src/CreateEntity.css */
+.create-entity-container {
+    display: flex;
+  }
+  
+  .create-entity-content {
+    margin-left: 260px; /* Ajusta este valor según el ancho de la barra lateral */
+    padding: 20px;
+    flex: 1;
+  }
+  
+  .create-entity-content h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .create-entity-content form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-entity-content label {
+    margin-bottom: 15px;
+  }
+  
+  .create-entity-content button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .create-entity-content button:hover {
+    background-color: #0056b3;
+  }
+  
