@@ -12,7 +12,7 @@ const photoRoutes = require('./routes/photoRoutes');
 const lineRoutes = require('./routes/lineRoutes');
 const specialistRoutes = require('./routes/specialistRoutes');
 const submachineRoutes = require('./routes/submachineRoutes');
-
+const reportsRouter = require('./routes/reportRoutes');
 const app = express();
 
 // Configura CORS para permitir solicitudes desde el frontend
@@ -31,7 +31,7 @@ app.use('/api/observations', observationRoutes);
 app.use('/api/photos', photoRoutes);
 app.use('/api/lines', lineRoutes);
 app.use('/api/specialists', specialistRoutes);
-
+app.use('/api/reports', reportsRouter);
 // Sincroniza la base de datos
 db.sequelize.sync()
   .then(() => {

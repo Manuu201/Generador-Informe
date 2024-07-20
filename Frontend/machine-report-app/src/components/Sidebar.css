@@ -5,14 +5,20 @@
     left: 0;
     top: 0;
     height: 100%;
-    background-color: #f4f4f4;
+    background-color: #3f51b5;
+    color: white;
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto; /* Para manejar el contenido que sobrepase el tamaño del sidebar */
   }
   
   .sidebar h2 {
     font-size: 1.5rem;
     margin-bottom: 20px;
+    color: #ffeb3b;
   }
   
   .sidebar ul {
@@ -26,11 +32,49 @@
   
   .sidebar ul li a {
     text-decoration: none;
-    color: #333;
+    color: #ffffff;
     font-size: 1.1rem;
+    transition: color 0.3s ease;
   }
   
   .sidebar ul li a:hover {
-    text-decoration: underline;
+    color: #ffeb3b;
+  }
+  
+  .back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    color: #3f51b5;
+    background-color: #ffeb3b;
+    border-radius: 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background-color: #ffffff;
+    color: #3f51b5;
+  }
+  
+  /* Ajuste para pantallas pequeñas */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+  
+    .sidebar ul {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+  
+    .back-button {
+      width: 100%;
+      text-align: center;
+    }
   }
   

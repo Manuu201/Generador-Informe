@@ -1,0 +1,40 @@
+/* src/components/AddTask.css */
+.add-task {
+    padding: 20px;
+    margin-left: 250px; /* Ajusta según el tamaño del sidebar */
+  }
+  
+  .add-task h2 {
+    color: #3f51b5;
+  }
+  
+  .add-task form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+  }
+  
+  .add-task label {
+    margin-bottom: 10px;
+  }
+  
+  .add-task input, .add-task select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .add-task button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-task button:hover {
+    background-color: #45a049;
+  }
+  

@@ -1,0 +1,40 @@
+/* src/components/AddSubmachine.css */
+.add-submachine {
+    padding: 20px;
+    margin-left: 250px; /* Ajusta según el tamaño del sidebar */
+  }
+  
+  .add-submachine h2 {
+    color: #3f51b5;
+  }
+  
+  .add-submachine form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+  }
+  
+  .add-submachine label {
+    margin-bottom: 10px;
+  }
+  
+  .add-submachine input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .add-submachine button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-submachine button:hover {
+    background-color: #45a049;
+  }
+  

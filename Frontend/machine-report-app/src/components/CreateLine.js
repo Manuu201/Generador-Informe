@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import './CommonStyles.css'; // Usa el archivo de estilos común
 
 const CreateLine = () => {
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [location, setLocation] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/lines', { name, description });
-      alert('Línea creada con éxito!');
+      const response = await axios.post('http://localhost:3000/api/lines', { name, location });
+      toast.success('Línea creada con éxito!');
       setName('');
-      setDescription('');
+      setLocation('');
     } catch (error) {
       console.error('Error creando la línea:', error);
-      alert(`Error: ${error.message}`);
+      toast.error(`Error: ${error.message}`);
     }
   };
 
@@ -28,8 +29,8 @@ const CreateLine = () => {
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
         </label>
         <label>
-          Descripción:
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
+          Ubicación:
+          <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} required />
         </label>
         <button type="submit">Crear</button>
       </form>

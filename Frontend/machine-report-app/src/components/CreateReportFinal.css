@@ -1,0 +1,47 @@
+/* src/components/CreateReportFinal.css */
+
+.create-report-final {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .create-report-final h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .create-report-final form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .create-report-final label {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-report-final textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    resize: vertical;
+  }
+  
+  .create-report-final button {
+    padding: 10px 20px;
+    background-color: #3f51b5;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .create-report-final button:hover {
+    background-color: #303f9f;
+  }
+  

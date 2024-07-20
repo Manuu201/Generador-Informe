@@ -1,31 +1,69 @@
+/* src/components/CreateReport.css */
 .create-report {
-    margin: 20px;
+    padding: 20px;
+    margin-left: 250px; /* Adjust according to sidebar width */
   }
   
-  .create-report form {
-    display: flex;
-    flex-direction: column;
+  .create-report h2 {
+    color: #3f51b5;
   }
   
-  .create-report label {
-    margin-bottom: 10px;
+  .submachines-tasks {
+    margin-bottom: 20px;
   }
   
-  .create-report select,
-  .create-report textarea {
-    padding: 5px;
-    margin-bottom: 10px;
+  .submachines-tasks table {
+    width: 100%;
+    border-collapse: collapse;
   }
   
-  .create-report button {
+  .submachines-tasks th, .submachines-tasks td {
     padding: 10px;
-    background-color: #007bff;
+    border: 1px solid #ddd;
+  }
+  
+  .submachines-tasks th {
+    background-color: #3f51b5;
+    color: white;
+  }
+  
+  .submachines-tasks tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .submachines-tasks ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .submachines-tasks ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .add-observation {
+    margin-top: 20px;
+  }
+  
+  .add-observation input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .add-observation button {
+    padding: 10px;
+    background-color: #4CAF50;
     color: white;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
   }
   
-  .create-report button:hover {
-    background-color: #0056b3;
+  .add-observation button:hover {
+    background-color: #45a049;
   }
   

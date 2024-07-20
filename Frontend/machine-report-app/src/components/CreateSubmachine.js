@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import './CommonStyles.css'; // Usa el archivo de estilos común
 
 const CreateSubmachine = () => {
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [machineId, setMachineId] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/submachines', { name, description });
-      alert('Submáquina creada con éxito!');
+      const response = await axios.post('http://localhost:3000/api/submachines', { name, machineId });
+      toast.success('Submáquina creada con éxito!');
       setName('');
-      setDescription('');
+      setMachineId('');
     } catch (error) {
       console.error('Error creando la submáquina:', error);
-      alert(`Error: ${error.message}`);
+      toast.error(`Error: ${error.message}`);
     }
   };
 
@@ -28,8 +29,8 @@ const CreateSubmachine = () => {
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
         </label>
         <label>
-          Descripción:
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
+          ID de la Máquina:
+          <input type="number" value={machineId} onChange={(e) => setMachineId(e.target.value)} required />
         </label>
         <button type="submit">Crear</button>
       </form>

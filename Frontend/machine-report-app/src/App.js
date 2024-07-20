@@ -6,18 +6,33 @@ import CreateEntity from './components/CreateEntity';
 import CreateSubmachine from './components/CreateSubmachine';
 import CreateOperator from './components/CreateOperator';
 import CreateLine from './components/CreateLine';
-import CreateReport from './components/CreateReport'; // Asegúrate de que existe este componente
+import CreateReport from './components/CreateReport';
+import CreateTask from './components/CreateTask';
+import AddTask from './components/AddTask';
+import AddSubmachine from './components/AddSubmachine';
+import AddObservation from './components/AddObservation';
+import MachineDetails from './components/MachineDetails'; // Importa el nuevo componente
+import MainLayout from './components/MainLayout';
+import CreateReportFinal from './components/CreateReportFinal';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/create-entity" element={<CreateEntity />} />
-        <Route path="/create-submachine" element={<CreateSubmachine />} />
-        <Route path="/create-operator" element={<CreateOperator />} />
-        <Route path="/create-line" element={<CreateLine />} />
-        <Route path="/create-report" element={<CreateReport />} />
+        <Route element={<MainLayout />}>
+          <Route path="/create-entity" element={<CreateEntity />} />
+          <Route path="/create-submachine" element={<CreateSubmachine />} />
+          <Route path="/create-operator" element={<CreateOperator />} />
+          <Route path="/create-line" element={<CreateLine />} />
+          <Route path="/create-report" element={<CreateReport />} />
+          <Route path="/create-task" element={<CreateTask />} />
+          <Route path="/add-task" element={<AddTask />} />
+          <Route path="/add-submachine" element={<AddSubmachine />} />
+          <Route path="/add-observation" element={<AddObservation />} />
+          <Route path="/machine-details/:machineId" element={<MachineDetails />} /> {/* Nueva ruta */}
+          <Route path="/create-report-final/:machineId" element={<CreateReportFinal />} /> {/* Ruta para crear el informe final */}
+        </Route>
       </Routes>
     </Router>
   );
