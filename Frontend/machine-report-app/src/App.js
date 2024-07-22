@@ -14,18 +14,20 @@ import AddObservation from './components/AddObservation';
 import MachineDetails from './components/MachineDetails'; // Importa el nuevo componente
 import MainLayout from './components/MainLayout';
 import CreateReportFinal from './components/CreateReportFinal';
+import CreateEntityLayout from './components/CreateEntityLayout'; // Importa el nuevo layout
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route element={<MainLayout />}>
+        <Route element={<CreateEntityLayout />}> {/* Usa el nuevo layout para CreateEntity */}
           <Route path="/create-entity" element={<CreateEntity />} />
+        </Route>
+        <Route element={<MainLayout />}>
           <Route path="/create-submachine" element={<CreateSubmachine />} />
           <Route path="/create-operator" element={<CreateOperator />} />
           <Route path="/create-line" element={<CreateLine />} />
-          <Route path="/create-report" element={<CreateReport />} />
           <Route path="/create-task" element={<CreateTask />} />
           <Route path="/add-task" element={<AddTask />} />
           <Route path="/add-submachine" element={<AddSubmachine />} />
@@ -33,6 +35,7 @@ function App() {
           <Route path="/machine-details/:machineId" element={<MachineDetails />} /> {/* Nueva ruta */}
           <Route path="/create-report-final/:machineId" element={<CreateReportFinal />} /> {/* Ruta para crear el informe final */}
         </Route>
+        <Route path="/create-report" element={<CreateReport />} /> {/* Elimina de MainLayout */}
       </Routes>
     </Router>
   );

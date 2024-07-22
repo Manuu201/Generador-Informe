@@ -67,4 +67,17 @@ router.get('/:machineId/:submachineId', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const observation = await Observation.findByPk(req.params.id);
+    if (!observation) {
+      return res.status(404).json({ error: 'Observation not found' });
+    }
+    await observation.destroy();
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 module.exports = router;

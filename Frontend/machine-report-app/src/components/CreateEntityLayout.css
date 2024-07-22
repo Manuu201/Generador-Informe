@@ -1,0 +1,99 @@
+/* src/components/CreateEntityLayout.css */
+
+.create-entity-layout {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 250px; /* Ajusta el ancho según tus necesidades */
+    background-color: #2c3e50; /* Color de fondo para la barra lateral */
+    color: #ecf0f1; /* Color de texto para la barra lateral */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .sidebar a {
+    color: #ecf0f1; /* Color de texto para los enlaces */
+    text-decoration: none; /* Sin subrayado para los enlaces */
+    margin: 10px 0; /* Espaciado entre enlaces */
+  }
+  
+  .sidebar a:hover {
+    color: #3498db; /* Color de texto al pasar el cursor sobre los enlaces */
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+    background-color: #ecf0f1; /* Color de fondo para el contenido principal */
+    overflow-y: auto; /* Agrega scroll vertical si es necesario */
+  }
+  
+  .content h2 {
+    margin-top: 0;
+  }
+  
+  /* Ajustes adicionales para una apariencia más atractiva */
+  .sidebar h1 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar .menu-item {
+    padding: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sidebar .menu-item:hover {
+    background-color: #34495e;
+    border-radius: 5px;
+  }
+  
+  .content form {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .content form label {
+    display: block;
+    margin: 15px 0 5px;
+  }
+  
+  .content form input,
+  .content form select,
+  .content form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+  }
+  
+  .content form button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .content form button:hover {
+    background-color: #2980b9;
+  }
+  
+  @media (max-width: 768px) {
+    .create-entity-layout {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+      height: auto;
+    }
+  }
+  

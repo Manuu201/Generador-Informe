@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./models');
+const path = require('path');
 
 // Importar rutas
 const userRoutes = require('./routes/userRoutes');
@@ -21,6 +22,7 @@ app.use(cors({
 }));
 
 app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads'));
 
 // Define las rutas
 app.use('/api/users', userRoutes);
