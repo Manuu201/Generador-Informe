@@ -5,12 +5,14 @@
 .details-table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
 .details-table th,
 .details-table td {
   border: 1px solid #ddd;
   padding: 8px;
+  text-align: left;
 }
 
 .details-table th {
@@ -18,61 +20,76 @@
 }
 
 .task-item,
-.observation-item {
+.observation-item,
+.image-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 0;
+  padding: 4px 0;
 }
 
-.delete-button {
+.task-item span,
+.observation-item span {
+  flex: 1;
+}
+
+.image-item img {
+  max-width: 100px;
+  max-height: 100px;
+  margin-right: 10px;
+}
+
+.delete-btn {
   display: none;
-  background-color: transparent;
+  background-color: red;
+  color: white;
   border: none;
-  color: red;
+  padding: 4px 8px;
   cursor: pointer;
-  font-size: 12px;
 }
 
-.delete-button:hover {
-  text-decoration: underline;
-}
-
-.task-item:hover .delete-button,
-.observation-item:hover .delete-button,
-.image-container:hover .delete-button {
+.task-item:hover .delete-btn,
+.observation-item:hover .delete-btn,
+.image-item:hover .delete-btn,
+.specialists-section li:hover .delete-btn {
   display: inline-block;
 }
 
-.add-button {
-  background-color: #4caf50;
+.create-report-btn {
+  background-color: #007bff;
   color: white;
   border: none;
-  cursor: pointer;
-  padding: 5px 10px;
-  margin-top: 10px;
-}
-
-.add-button:hover {
-  background-color: #45a049;
-}
-
-.upload-button {
-  display: block;
-  margin-top: 10px;
-}
-
-.create-report-button {
-  background-color: #2196f3;
-  color: white;
-  border: none;
-  cursor: pointer;
   padding: 10px 20px;
+  cursor: pointer;
   margin-top: 20px;
 }
 
-.create-report-button:hover {
-  background-color: #0b7dda;
+.specialists-section {
+  margin-top: 20px;
+}
+
+.specialists-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.specialists-section li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.specialists-section li span {
+  flex: 1;
+}
+
+.specialists-section button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
 }
 
 .modal {
@@ -90,27 +107,33 @@
 .modal-content {
   background-color: white;
   padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  max-width: 80%;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+}
+
+.modal-content textarea,
+.modal-content input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  width: 400px;
-  max-width: 90%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.submachine-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  display: block;
-  margin: 10px 0;
+.modal-content button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
-.image-container {
-  position: relative;
-}
-
-.image-container .delete-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  display: none;
+.modal-content button:last-child {
+  background-color: #6c757d;
 }

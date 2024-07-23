@@ -11,11 +11,19 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 const CreateReportFinal = () => {
   const { machineId } = useParams();
   const [machineDetails, setMachineDetails] = useState(null);
+  const [machineInfo, setMachineInfo] = useState(null);
+  const [specialists, setSpecialists] = useState([]);
 
   useEffect(() => {
     const fetchMachineDetails = async () => {
       try {
+        const machineResponse = await axios.get(`http://localhost:3000/api/machines/${machineId}`);
+        setMachineInfo(machineResponse.data);
+
         const submachineResponse = await axios.get(`http://localhost:3000/api/submachines/machine/${machineId}`);
+        const specialistsResponse = await axios.get(`http://localhost:3000/api/specialists/machine/${machineId}`);
+        setSpecialists(specialistsResponse.data);
+
         const tasksAndObservations = await Promise.all(submachineResponse.data.map(async (submachine) => {
           const [taskResponse, observationResponse, imageResponse] = await Promise.all([
             axios.get(`http://localhost:3000/api/tasks/submachine/${submachine.id}`),
@@ -69,36 +77,37 @@ const CreateReportFinal = () => {
   };
 
   const generatePDF = () => {
-    if (!machineDetails) return;
+    if (!machineDetails || !machineInfo) return;
 
     const { machineId, submachines } = machineDetails;
+    const { name, location } = machineInfo;
 
     const docDefinition = {
       content: [
         { text: 'INFORME MANTENCIÓN ANUAL', style: 'header' },
-        { text: `Máquina ID: ${machineId}`, style: 'subheader' },
+        { text: `Máquina: ${name} - Ubicación: ${location}`, style: 'subheader' },
+        { text: 'Especialistas:', style: 'subheader', margin: [0, 10, 0, 5] },
+        ...specialists.map(specialist => ({ text: specialist.name, margin: [0, 5, 0, 5] })),
         ...submachines.flatMap(submachine => [
           { text: `Submáquina: ${submachine.name}`, style: 'subheader', margin: [0, 10, 0, 10] },
+          submachine.images.length > 0 ? { image: submachine.images[0], width: 150, alignment: 'center', margin: [0, 0, 0, 10] } : null,
           {
             table: {
               headerRows: 1,
-              widths: ['*', '*', '*'],
+              widths: ['*', '*'],
               body: [
                 [
                   { text: 'Tareas', style: 'tableHeader' },
-                  { text: 'Observaciones', style: 'tableHeader' },
-                  { text: 'Imagen', style: 'tableHeader' }
+                  { text: 'Observaciones', style: 'tableHeader' }
                 ],
-                ...submachine.tasks.map(task => [task.description, '', '']),
-                ...submachine.observations.map(obs => ['', obs.note, '']),
-                ...submachine.images.map(img => ['', '', { image: img, width: 100 }])
+                ...generateTableRows(submachine.tasks, submachine.observations)
               ]
             },
             layout: 'lightHorizontalLines'
           }
         ]),
         { text: '\nFin del Informe', style: 'footer' }
-      ],
+      ].filter(Boolean),
       styles: {
         header: {
           fontSize: 18,
@@ -124,6 +133,20 @@ const CreateReportFinal = () => {
     };
 
     pdfMake.createPdf(docDefinition).download(`Informe_Mantenimiento_Anual_${machineId}.pdf`);
+  };
+
+  const generateTableRows = (tasks, observations) => {
+    const maxLength = Math.max(tasks.length, observations.length);
+    const rows = [];
+
+    for (let i = 0; i < maxLength; i++) {
+      rows.push([
+        tasks[i] ? `${i + 1}. ${tasks[i].description} [${tasks[i].status === 1 ? 'Completa' : 'Incompleta'}]` : '',
+        observations[i] ? `${i + 1}. ${observations[i].note}` : ''
+      ]);
+    }
+
+    return rows;
   };
 
   return (
