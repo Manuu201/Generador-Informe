@@ -9,11 +9,12 @@ const userRoutes = require('./routes/userRoutes');
 const machineRoutes = require('./routes/machineRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const observationRoutes = require('./routes/observationRoutes');
-const photoRoutes = require('./routes/photoRoutes');
+const photoRoutes = require('./routes/photoRoutes'); // Aquí importamos las rutas de fotos
 const lineRoutes = require('./routes/lineRoutes');
 const specialistRoutes = require('./routes/specialistRoutes');
 const submachineRoutes = require('./routes/submachineRoutes');
 const reportsRouter = require('./routes/reportRoutes');
+
 const app = express();
 
 // Configura CORS para permitir solicitudes desde el frontend
@@ -22,7 +23,7 @@ app.use(cors({
 }));
 
 app.use(bodyParser.json());
-app.use('/uploads', express.static('uploads'));
+app.use('/imagenes', express.static('imagenes')); // Servir archivos estáticos desde 'imagenes'
 
 // Define las rutas
 app.use('/api/users', userRoutes);
@@ -30,10 +31,11 @@ app.use('/api/machines', machineRoutes);
 app.use('/api/submachines', submachineRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/observations', observationRoutes);
-app.use('/api/photos', photoRoutes);
+app.use('/api/photos', photoRoutes); // Aquí usamos las rutas de fotos
 app.use('/api/lines', lineRoutes);
 app.use('/api/specialists', specialistRoutes);
 app.use('/api/reports', reportsRouter);
+
 // Sincroniza la base de datos
 db.sequelize.sync()
   .then(() => {

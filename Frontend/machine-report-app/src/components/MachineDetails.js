@@ -15,6 +15,7 @@ const MachineDetails = () => {
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [deleteItem, setDeleteItem] = useState({ id: null, type: '', submachineId: null });
+  const [images, setImages] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,27 +25,32 @@ const MachineDetails = () => {
         setSubmachines(submachineResponse.data);
 
         const tasksAndObservations = await Promise.all(submachineResponse.data.map(async (submachine) => {
-          const [taskResponse, observationResponse] = await Promise.all([
+          const [taskResponse, observationResponse, imageResponse] = await Promise.all([
             axios.get(`http://localhost:3000/api/tasks/submachine/${submachine.id}`),
-            axios.get(`http://localhost:3000/api/observations/submachine/${submachine.id}`)
+            axios.get(`http://localhost:3000/api/observations/submachine/${submachine.id}`),
+            axios.get(`http://localhost:3000/api/photos/submachine/${submachine.id}`)
           ]);
           return {
             submachineId: submachine.id,
             tasks: taskResponse.data,
-            observations: observationResponse.data
+            observations: observationResponse.data,
+            images: imageResponse.data
           };
         }));
 
         const tasks = {};
         const observations = {};
+        const images = {};
 
-        tasksAndObservations.forEach(({ submachineId, tasks: taskList, observations: observationList }) => {
+        tasksAndObservations.forEach(({ submachineId, tasks: taskList, observations: observationList, images: imageList }) => {
           tasks[submachineId] = taskList;
           observations[submachineId] = observationList;
+          images[submachineId] = imageList;
         });
 
         setTasks(tasks);
         setObservations(observations);
+        setImages(images);
       } catch (error) {
         console.error('Error fetching machine details:', error);
       }
@@ -111,6 +117,12 @@ const MachineDetails = () => {
           ...prev,
           [deleteItem.submachineId]: prev[deleteItem.submachineId].filter(obs => obs.id !== deleteItem.id)
         }));
+      } else if (deleteItem.type === 'image') {
+        await axios.delete(`http://localhost:3000/api/photos/${deleteItem.id}`);
+        setImages((prev) => ({
+          ...prev,
+          [deleteItem.submachineId]: prev[deleteItem.submachineId].filter(img => img.id !== deleteItem.id)
+        }));
       }
       setShowDeleteConfirmation(false);
     } catch (error) {
@@ -128,8 +140,37 @@ const MachineDetails = () => {
     setShowDeleteConfirmation(true);
   };
 
+  const handleDeleteImage = (imageId, submachineId) => {
+    setDeleteItem({ id: imageId, type: 'image', submachineId });
+    setShowDeleteConfirmation(true);
+  };
+
   const handleCreateReport = () => {
     navigate(`/create-report-final/${machineId}`);
+  };
+
+  const handleImageUpload = async (event, submachineId) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('machineId', machineId);
+    formData.append('submachineId', submachineId);
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/photos', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      setImages((prev) => ({
+        ...prev,
+        [submachineId]: [...(prev[submachineId] || []), response.data]
+      }));
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
   };
 
   return (
@@ -141,6 +182,7 @@ const MachineDetails = () => {
             <th>Submáquina</th>
             <th>Tareas</th>
             <th>Observaciones</th>
+            <th>Imagen</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -178,54 +220,70 @@ const MachineDetails = () => {
                 }}>+</button>
               </td>
               <td>
+                {images[submachine.id]?.map((image) => (
+                  <div key={image.id} className="image-container">
+                    <img src={image.url} alt="submachine" className="submachine-image" />
+                    <button className="delete-button" onClick={() => handleDeleteImage(image.id, submachine.id)}>Eliminar</button>
+                  </div>
+                ))}
+                {!images[submachine.id] || images[submachine.id].length === 0 ? (
+                  <input
+                    type="file"
+                    onChange={(event) => handleImageUpload(event, submachine.id)}
+                    className="upload-button"
+                  />
+                ) : null}
+              </td>
+              <td>
                 {/* Additional actions can be added here */}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <button className="create-report-button" onClick={handleCreateReport}>Crear Reporte</button>
+
       {showObservationModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={() => setShowObservationModal(false)}>&times;</span>
-            <h2>Agregar Observación</h2>
-            <input
-              type="text"
+            <h3>Añadir Observación</h3>
+            <textarea
               value={newObservation}
               onChange={(e) => setNewObservation(e.target.value)}
-              placeholder="Agregar nueva observación"
+              rows="4"
             />
-            <button onClick={handleAddObservation}>Agregar Observación</button>
+            <button onClick={handleAddObservation}>Añadir</button>
+            <button onClick={() => setShowObservationModal(false)}>Cancelar</button>
           </div>
         </div>
       )}
+
       {showTaskModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={() => setShowTaskModal(false)}>&times;</span>
-            <h2>Agregar Tarea</h2>
-            <input
-              type="text"
+            <h3>Añadir Tarea</h3>
+            <textarea
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
-              placeholder="Agregar nueva tarea"
+              rows="4"
             />
-            <button onClick={handleAddTask}>Agregar Tarea</button>
+            <button onClick={handleAddTask}>Añadir</button>
+            <button onClick={() => setShowTaskModal(false)}>Cancelar</button>
           </div>
         </div>
       )}
+
       {showDeleteConfirmation && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={() => setShowDeleteConfirmation(false)}>&times;</span>
-            <h2>Confirmar Eliminación</h2>
-            <p>¿Estás seguro de que deseas eliminar esta {deleteItem.type === 'task' ? 'tarea' : 'observación'}?</p>
-            <button onClick={handleDelete} className="confirm-delete-button">Confirmar</button>
-            <button onClick={() => setShowDeleteConfirmation(false)} className="cancel-delete-button">Cancelar</button>
+            <h3>Confirmar Eliminación</h3>
+            <p>¿Estás seguro de que quieres eliminar este {deleteItem.type}?</p>
+            <button onClick={handleDelete}>Sí, eliminar</button>
+            <button onClick={() => setShowDeleteConfirmation(false)}>Cancelar</button>
           </div>
         </div>
       )}
-      <button onClick={handleCreateReport} className="create-report-button">Crear Informe</button>
     </div>
   );
 };

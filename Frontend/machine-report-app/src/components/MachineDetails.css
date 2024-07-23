@@ -7,56 +7,72 @@
   border-collapse: collapse;
 }
 
-.details-table th, .details-table td {
+.details-table th,
+.details-table td {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
 .details-table th {
-  background-color: #f4f4f4;
+  background-color: #f2f2f2;
 }
 
-.task-item, .observation-item {
-  position: relative;
+.task-item,
+.observation-item {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
-}
-
-.task-item:hover .delete-button, .observation-item:hover .delete-button {
-  display: block;
+  padding: 5px 0;
 }
 
 .delete-button {
   display: none;
-  position: absolute;
-  right: 10px;
-  background-color: #f44336;
-  color: white;
+  background-color: transparent;
   border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
+  color: red;
   cursor: pointer;
   font-size: 12px;
 }
 
 .delete-button:hover {
-  background-color: #d32f2f;
+  text-decoration: underline;
+}
+
+.task-item:hover .delete-button,
+.observation-item:hover .delete-button,
+.image-container:hover .delete-button {
+  display: inline-block;
 }
 
 .add-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
   cursor: pointer;
-  font-size: 18px;
-  margin-left: 10px;
+  padding: 5px 10px;
+  margin-top: 10px;
 }
 
 .add-button:hover {
-  background-color: #388e3c;
+  background-color: #45a049;
+}
+
+.upload-button {
+  display: block;
+  margin-top: 10px;
+}
+
+.create-report-button {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-top: 20px;
+}
+
+.create-report-button:hover {
+  background-color: #0b7dda;
 }
 
 .modal {
@@ -67,38 +83,34 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
   background-color: white;
   padding: 20px;
-  border-radius: 8px;
-  width: 300px;
-  text-align: center;
+  border-radius: 4px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.submachine-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+  margin: 10px 0;
+}
+
+.image-container {
   position: relative;
 }
 
-.close {
+.image-container .delete-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.create-report-button {
-  background-color: #2196F3;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 20px;
-}
-
-.create-report-button:hover {
-  background-color: #1976d2;
+  top: 5px;
+  right: 5px;
+  display: none;
 }
