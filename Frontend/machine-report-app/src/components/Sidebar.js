@@ -9,11 +9,10 @@ const Sidebar = () => {
       <div className="menu">
         <h2>Menú</h2>
         <ul>
-          <li><Link to="/create-machine">Crear Máquina</Link></li>
+          <li><Link to="/create-entity">Crear Máquina</Link></li>
           <li><Link to="/create-submachine">Crear Submáquina</Link></li>
-          <li><Link to="/create-operator">Crear Operador</Link></li>
-          <li><Link to="/create-line">Crear Línea</Link></li>
-          <li><Link to="/create-task">Crear Tarea</Link></li>
+          <li><Link to="/machine-list">Ver Máquinas</Link></li>
+          <li><Link to="/submachine-list/:machineId">Ver Submáquinas</Link></li>
         </ul>
       </div>
       <Link to="/" className="back-button">Inicio</Link>

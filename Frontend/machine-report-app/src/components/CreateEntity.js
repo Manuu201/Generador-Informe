@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Sidebar from './Sidebar'; // Asegúrate de tener el componente Sidebar
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './CommonStyles.css'; // Usa el archivo CSS común
 
 const CreateEntity = () => {
@@ -12,13 +14,13 @@ const CreateEntity = () => {
     event.preventDefault();
     try {
       const response = await axios.post('http://localhost:3000/api/machines', { name, status, location });
-      alert('Máquina creada con éxito!');
+      toast.success('Máquina creada con éxito!');
       setName('');
       setStatus('');
       setLocation('');
     } catch (error) {
       console.error('Error creando la máquina:', error);
-      alert(`Error: ${error.message}`);
+      toast.error(`Error: ${error.message}`);
     }
   };
 
@@ -51,6 +53,7 @@ const CreateEntity = () => {
           </label>
           <button type="submit">Crear</button>
         </form>
+        <ToastContainer /> {/* Agrega el ToastContainer aquí */}
       </div>
     </div>
   );

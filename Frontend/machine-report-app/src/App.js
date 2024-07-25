@@ -16,6 +16,8 @@ import MainLayout from './components/MainLayout';
 import CreateReportFinal from './components/CreateReportFinal';
 import CreateEntityLayout from './components/CreateEntityLayout'; // Importa el nuevo layout
 import MainLayoutSegunda from './components/MainLayoutSegunda';
+import MachinesList from './components/MachineList';
+import SubmachinesList from './components/SubMachineList';
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path="/add-task" element={<AddTask />} />
           <Route path="/add-submachine" element={<AddSubmachine />} />
           <Route path="/add-observation" element={<AddObservation />} />
+          <Route path="/machine-list" element={<MachinesList/>} />
+          <Route path="/submachine-list/:machineId" element={<SubmachinesList />} />
         </Route>
         <Route element={<MainLayoutSegunda />}>
           <Route path="/create-report" element={<CreateReport />} /> {/* Elimina de MainLayout */}

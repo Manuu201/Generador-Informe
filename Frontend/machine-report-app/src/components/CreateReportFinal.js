@@ -85,49 +85,87 @@ const CreateReportFinal = () => {
     const docDefinition = {
       content: [
         { text: 'INFORME MANTENCIÓN ANUAL', style: 'header' },
-        { text: `Máquina: ${name} - Ubicación: ${location}`, style: 'subheader' },
+        { text: `Máquina: ${name} - ${location}`, style: 'subheader' },
         { text: 'Especialistas:', style: 'subheader', margin: [0, 10, 0, 5] },
         ...specialists.map(specialist => ({ text: specialist.name, margin: [0, 5, 0, 5] })),
         ...submachines.flatMap(submachine => [
           { text: `Submáquina: ${submachine.name}`, style: 'subheader', margin: [0, 10, 0, 10] },
-          submachine.images.length > 0 ? { image: submachine.images[0], width: 150, alignment: 'center', margin: [0, 0, 0, 10] } : null,
           {
-            table: {
-              headerRows: 1,
-              widths: ['*', '*'],
-              body: [
-                [
-                  { text: 'Tareas', style: 'tableHeader' },
-                  { text: 'Observaciones', style: 'tableHeader' }
-                ],
-                ...generateTableRows(submachine.tasks, submachine.observations)
-              ]
-            },
-            layout: 'lightHorizontalLines'
+            columns: [
+              submachine.images.length > 0 ? {
+                image: submachine.images[0],
+                width: 100,
+                margin: [0, 0, 10, 0],
+                alignment: 'center',
+                border: [true, true, true, true],
+                fit: [100, 100]
+              } : {
+                text: '', // Placeholder to maintain layout
+                margin: [0, 0, 10, 0],
+                width: 100
+              },
+              {
+                table: {
+                  headerRows: 1,
+                  widths: ['*', '*'],
+                  body: [
+                    [
+                      { text: 'Tareas', style: 'tableHeader' },
+                      { text: 'Observaciones', style: 'tableHeader' }
+                    ],
+                    ...generateTableRows(submachine.tasks, submachine.observations)
+                  ]
+                },
+                layout: {
+                  fillColor: function (rowIndex, node, columnIndex) {
+                    return (rowIndex % 2 === 0) ? '#f3f3f3' : null;
+                  },
+                  hLineColor: function (i, node) {
+                    return (i === 0 || i === node.table.body.length) ? '#000' : '#ddd';
+                  },
+                  vLineColor: function (i, node) {
+                    return (i === 0 || i === node.table.widths.length) ? '#000' : '#ddd';
+                  },
+                  hLineWidth: function (i, node) {
+                    return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                  },
+                  vLineWidth: function (i, node) {
+                    return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+                  }
+                },
+                width: '*'
+              }
+            ],
+            margin: [0, 10, 0, 10]
           }
         ]),
         { text: '\nFin del Informe', style: 'footer' }
       ].filter(Boolean),
       styles: {
         header: {
-          fontSize: 18,
+          fontSize: 22,
           bold: true,
-          alignment: 'center'
+          alignment: 'center',
+          margin: [0, 20, 0, 10]
         },
         subheader: {
-          fontSize: 16,
+          fontSize: 18,
           bold: true,
+          color: '#2a5599',
           margin: [0, 10, 0, 5]
         },
         tableHeader: {
           bold: true,
           fontSize: 14,
-          color: 'black'
+          color: 'black',
+          fillColor: '#f0f0f0',
+          alignment: 'center'
         },
         footer: {
           fontSize: 12,
           italics: true,
-          alignment: 'center'
+          alignment: 'center',
+          margin: [0, 10, 0, 0]
         }
       }
     };
