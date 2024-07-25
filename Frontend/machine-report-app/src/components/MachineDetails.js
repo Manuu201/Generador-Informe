@@ -228,97 +228,94 @@ const MachineDetails = () => {
             <tr key={submachine.id}>
               <td>{submachine.name}</td>
               <td>
-                {tasks[submachine.id]?.map((task) => (
+                {tasks[submachine.id]?.map((task, index) => (
                   <div key={task.id} className="task-item">
-                    <span>{task.description}</span>
+                    <span>{index + 1}. {task.description}</span>
                     <input
                       type="checkbox"
                       checked={task.status === 1}
                       onChange={async () => {
+                        const updatedStatus = task.status === 1 ? 0 : 1;
                         try {
-                          const newStatus = task.status === 1 ? 0 : 1;
-                          await axios.put(`http://localhost:3000/api/tasks/${task.id}`, {
-                            ...task,
-                            status: newStatus
-                          });
+                          await axios.put(`http://localhost:3000/api/tasks/${task.id}`, { ...task, status: updatedStatus });
                           setTasks((prev) => ({
                             ...prev,
-                            [submachine.id]: prev[submachine.id].map((t) =>
-                              t.id === task.id ? { ...t, status: newStatus } : t
-                            )
+                            [submachine.id]: prev[submachine.id].map(t => t.id === task.id ? { ...t, status: updatedStatus } : t)
                           }));
                         } catch (error) {
                           console.error('Error updating task status:', error);
                         }
                       }}
                     />
-                    <button className="delete-btn" onClick={() => handleDeleteTask(task.id, submachine.id)}>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteTask(task.id, submachine.id)}
+                    >
                       Eliminar
                     </button>
                   </div>
                 ))}
-                <button onClick={() => {
-                  setSelectedSubmachineId(submachine.id);
-                  setShowTaskModal(true);
-                }}>
-                  Añadir Tarea
+                <button onClick={() => { setSelectedSubmachineId(submachine.id); setShowTaskModal(true); }}>
+                  Agregar Tarea
                 </button>
               </td>
               <td>
-                {observations[submachine.id]?.map((observation) => (
-                  <div key={observation.id} className="observation-item">
-                    <span>{observation.note}</span>
-                    <button className="delete-btn" onClick={() => handleDeleteObservation(observation.id, submachine.id)}>
+                {observations[submachine.id]?.map((obs, index) => (
+                  <div key={obs.id} className="observation-item">
+                    <span>{index + 1}. {obs.note}</span>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteObservation(obs.id, submachine.id)}
+                    >
                       Eliminar
                     </button>
                   </div>
                 ))}
-                <button onClick={() => {
-                  setSelectedSubmachineId(submachine.id);
-                  setShowObservationModal(true);
-                }}>
-                  Añadir Observación
+                <button onClick={() => { setSelectedSubmachineId(submachine.id); setShowObservationModal(true); }}>
+                  Agregar Observación
                 </button>
               </td>
               <td>
-                {images[submachine.id]?.map((image) => (
+                {images[submachine.id]?.map(image => (
                   <div key={image.id} className="image-item">
                     <img src={image.url} alt="Submachine" />
-                    <button className="delete-btn" onClick={() => handleDeleteImage(image.id, submachine.id)}>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteImage(image.id, submachine.id)}
+                    >
                       Eliminar
                     </button>
                   </div>
                 ))}
-                {!images[submachine.id] || images[submachine.id].length === 0 ? (
-                  <input type="file" onChange={(e) => handleImageUpload(e, submachine.id)} />
-                ) : null}
+                {images[submachine.id]?.length === 0 && (
+                  <input
+                    type="file"
+                    onChange={(event) => handleImageUpload(event, submachine.id)}
+                  />
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      <div className="specialists-section">
-        <h3>Especialistas</h3>
-        <ul>
-          {specialists.map((specialist) => (
-            <li key={specialist.id}>
-              <span>{specialist.name}</span>
-              <button className="delete-btn" onClick={() => handleDeleteSpecialist(specialist.id)}>
-                Eliminar
-              </button>
-            </li>
-          ))}
-        </ul>
-        <button onClick={() => setShowSpecialistModal(true)}>Añadir Especialista</button>
+      <h3>Especialistas Asignados</h3>
+      <ul>
+        {specialists.map(specialist => (
+          <li key={specialist.id}>
+            {specialist.name} ({specialist.email})
+            <button onClick={() => handleDeleteSpecialist(specialist.id)}>Eliminar</button>
+          </li>
+        ))}
+      </ul>
+      <button onClick={() => setShowSpecialistModal(true)}>Agregar Especialista</button>
+      <div className="button-container">
+        <button className="create-report-button" onClick={handleCreateReport}>Crear Reporte</button>
       </div>
-
-      <button className="create-report-btn" onClick={handleCreateReport}>Crear Reporte</button>
 
       {showObservationModal && (
         <div className="modal">
           <div className="modal-content">
-            <h3>Añadir Observación</h3>
+            <h3>Agregar Observación</h3>
             <textarea
               value={newObservation}
               onChange={(e) => setNewObservation(e.target.value)}
@@ -333,7 +330,7 @@ const MachineDetails = () => {
       {showTaskModal && (
         <div className="modal">
           <div className="modal-content">
-            <h3>Añadir Tarea</h3>
+            <h3>Agregar Tarea</h3>
             <textarea
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
@@ -348,18 +345,18 @@ const MachineDetails = () => {
       {showSpecialistModal && (
         <div className="modal">
           <div className="modal-content">
-            <h3>Añadir Especialista</h3>
+            <h3>Agregar Especialista</h3>
             <input
               type="text"
               value={newSpecialist.name}
-              onChange={(e) => setNewSpecialist((prev) => ({ ...prev, name: e.target.value }))}
-              placeholder="Nombre del especialista"
+              onChange={(e) => setNewSpecialist({ ...newSpecialist, name: e.target.value })}
+              placeholder="Nombre"
             />
             <input
               type="email"
               value={newSpecialist.email}
-              onChange={(e) => setNewSpecialist((prev) => ({ ...prev, email: e.target.value }))}
-              placeholder="Email del especialista"
+              onChange={(e) => setNewSpecialist({ ...newSpecialist, email: e.target.value })}
+              placeholder="Email"
             />
             <button onClick={handleAddSpecialist}>Guardar</button>
             <button onClick={() => setShowSpecialistModal(false)}>Cancelar</button>
@@ -371,8 +368,8 @@ const MachineDetails = () => {
         <div className="modal">
           <div className="modal-content">
             <h3>Confirmar Eliminación</h3>
-            <p>¿Está seguro de que desea eliminar este elemento?</p>
-            <button onClick={handleDelete}>Confirmar</button>
+            <p>¿Está seguro de que desea eliminar este {deleteItem.type}?</p>
+            <button onClick={handleDelete}>Sí, Eliminar</button>
             <button onClick={() => setShowDeleteConfirmation(false)}>Cancelar</button>
           </div>
         </div>

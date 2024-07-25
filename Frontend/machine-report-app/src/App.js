@@ -15,6 +15,7 @@ import MachineDetails from './components/MachineDetails'; // Importa el nuevo co
 import MainLayout from './components/MainLayout';
 import CreateReportFinal from './components/CreateReportFinal';
 import CreateEntityLayout from './components/CreateEntityLayout'; // Importa el nuevo layout
+import MainLayoutSegunda from './components/MainLayoutSegunda';
 
 function App() {
   return (
@@ -32,10 +33,12 @@ function App() {
           <Route path="/add-task" element={<AddTask />} />
           <Route path="/add-submachine" element={<AddSubmachine />} />
           <Route path="/add-observation" element={<AddObservation />} />
-          <Route path="/machine-details/:machineId" element={<MachineDetails />} /> {/* Nueva ruta */}
-          <Route path="/create-report-final/:machineId" element={<CreateReportFinal />} /> {/* Ruta para crear el informe final */}
         </Route>
-        <Route path="/create-report" element={<CreateReport />} /> {/* Elimina de MainLayout */}
+        <Route element={<MainLayoutSegunda />}>
+          <Route path="/create-report" element={<CreateReport />} /> {/* Elimina de MainLayout */}
+          <Route path="/machine-details/:machineId" element={<MachineDetails />} />
+          <Route path="/create-report-final/:machineId" element={<CreateReportFinal />} /> 
+        </Route>
       </Routes>
     </Router>
   );

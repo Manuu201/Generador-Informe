@@ -1,14 +1,13 @@
-// src/components/CreateReport.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redireccionar
+import { useNavigate } from 'react-router-dom';
 import './CreateReport.css';
 
 const CreateReport = () => {
   const [machines, setMachines] = useState([]);
   const [selectedMachine, setSelectedMachine] = useState('');
 
-  const navigate = useNavigate(); // Inicializa useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMachines = async () => {
@@ -25,7 +24,7 @@ const CreateReport = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (selectedMachine) {
-      navigate(`/machine-details/${selectedMachine}`); // Redirige a la vista de detalles de la máquina
+      navigate(`/machine-details/${selectedMachine}`);
     }
   };
 
@@ -42,7 +41,7 @@ const CreateReport = () => {
             ))}
           </select>
         </label>
-        <button type="submit">Proceed</button>
+        <button type="submit" className="proceed-button">Proceed</button>
       </form>
     </div>
   );
