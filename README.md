@@ -53,3 +53,11 @@ necesaria se generara un PDF con toda la información ingresada de una maquina e
 | Incorrecta agregación de nuevas entidades | Medio-Alto | Bajo-medio | Revisar estado de BD al actualizar o agregar |
 | Actualización incorrecta en BD | No mitigado | Medio-Alto | Realizar peticiones HTTPS con postman |
 
+## Cómo usar
+
+Se requiere de las aplicaciones como Node.js, MySQL.
+Para ejecutar de forma correcta se utilizan los siguientes pasos:
+1. Abrir la carpeta Backend y ejecutar **node app.js** en la cmd
+2. Abrir la carpeta Frontend/machine-report-app ejecutar **npm start**
+3. Listo
+
