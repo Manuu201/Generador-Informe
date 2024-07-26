@@ -78,29 +78,47 @@ const CreateReportFinal = () => {
 
   const generatePDF = () => {
     if (!machineDetails || !machineInfo) return;
-
+  
     const { machineId, submachines } = machineDetails;
     const { name, location } = machineInfo;
-
+  
+    const specialist = specialists.find(specialist => specialist.status === 1);
+    const maintenanceMembers = specialists.filter(specialist => specialist.status === 0);
+  
     const docDefinition = {
       content: [
         { text: 'INFORME MANTENCIÓN ANUAL', style: 'header' },
-        { text: `Máquina: ${name} - ${location}`, style: 'subheader' },
-        { text: 'Especialistas:', style: 'subheader', margin: [0, 10, 0, 5] },
-        ...specialists.map(specialist => ({ text: specialist.name, margin: [0, 5, 0, 5] })),
+        {
+          columns: [
+            {
+              text: `${location}\nEspecialista: ${specialist ? specialist.name : 'N/A'}`,
+              style: 'infoBox',
+              margin: [0, 10, 10, 0]
+            },
+            {
+              text: `Máquina: ${name}`,
+              style: 'infoBox',
+              margin: [0, 10, 10, 0]
+            }
+          ],
+          columnGap: 20,
+          margin: [0, 10, 0, 10]
+        },
+        { text: 'Integrantes de Mantenimiento:', style: 'subheader' },
+        ...maintenanceMembers.map((member, index) => ({ text: `${index + 1}. ${member.name}`, margin: [0, 5, 0, 5] })),
         ...submachines.flatMap(submachine => [
           { text: `Submáquina: ${submachine.name}`, style: 'subheader', margin: [0, 10, 0, 10] },
           {
             columns: [
               submachine.images.length > 0 ? {
                 image: submachine.images[0],
-                width: 100,
+                width: 100, // Ajustado para que quepa en los márgenes
                 margin: [0, 0, 10, 0],
                 alignment: 'center',
                 border: [true, true, true, true],
                 fit: [100, 100]
               } : {
-                text: '', // Placeholder to maintain layout
+                text: '', // Espacio reservado para mantener el diseño
                 margin: [0, 0, 10, 0],
                 width: 100
               },
@@ -140,13 +158,20 @@ const CreateReportFinal = () => {
           }
         ]),
         { text: '\nFin del Informe', style: 'footer' }
-      ].filter(Boolean),
+      ],
       styles: {
         header: {
-          fontSize: 22,
+          fontSize: 24,
           bold: true,
           alignment: 'center',
-          margin: [0, 20, 0, 10]
+          margin: [0, 20, 0, 10],
+          color: '#0056b3'
+        },
+        infoBox: {
+          fontSize: 16,
+          bold: true,
+          color: '#333',
+          margin: [0, 0, 0, 10]
         },
         subheader: {
           fontSize: 18,
@@ -154,22 +179,47 @@ const CreateReportFinal = () => {
           color: '#2a5599',
           margin: [0, 10, 0, 5]
         },
+        specialist: {
+          fontSize: 16,
+          bold: true,
+          color: 'black',
+          margin: [0, 10, 0, 10]
+        },
         tableHeader: {
           bold: true,
-          fontSize: 14,
+          fontSize: 12,
           color: 'black',
           fillColor: '#f0f0f0',
           alignment: 'center'
         },
         footer: {
-          fontSize: 12,
+          fontSize: 10,
           italics: true,
           alignment: 'center',
           margin: [0, 10, 0, 0]
         }
-      }
+      },
+      pageMargins: [80, 80, 80, 80], // Ajusta los márgenes
+      pageSize: 'A4',
+      pageOrientation: 'portrait',
+      background: [
+        {
+          canvas: [
+            {
+              type: 'rect',
+              x: 60,
+              y: 60,
+              w: 460,
+              h: 740,
+              lineColor: '#000000',
+              lineWidth: 1
+            }
+          ],
+          absolutePosition: { x: 0, y: 0 }
+        }
+      ]
     };
-
+  
     pdfMake.createPdf(docDefinition).download(`Informe_Mantenimiento_Anual_${machineId}.pdf`);
   };
 
@@ -189,7 +239,6 @@ const CreateReportFinal = () => {
 
   return (
     <div className="create-report-final">
-      <h2>Crear Informe Final</h2>
       <button onClick={generatePDF}>Crear Reporte</button>
     </div>
   );

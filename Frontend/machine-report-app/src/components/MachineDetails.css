@@ -8,132 +8,109 @@
   margin-bottom: 20px;
 }
 
-.details-table th,
-.details-table td {
+.details-table th, .details-table td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: left;
 }
 
 .details-table th {
   background-color: #f2f2f2;
 }
 
-.task-item,
-.observation-item,
-.image-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px 0;
-}
-
-.task-item span,
-.observation-item span {
-  flex: 1;
-}
-
-.image-item img {
-  max-width: 100px;
-  max-height: 100px;
-  margin-right: 10px;
-}
-
-.delete-btn {
-  display: none;
-  background-color: red;
-  color: white;
+.add-button, .delete-button, .set-manager-button, .create-report-button {
+  margin: 5px;
+  padding: 5px 10px;
   border: none;
-  padding: 4px 8px;
   cursor: pointer;
 }
 
-.task-item:hover .delete-btn,
-.observation-item:hover .delete-btn,
-.image-item:hover .delete-btn,
-.specialists-section li:hover .delete-btn {
-  display: inline-block;
+.add-button {
+  background-color: #4CAF50;
+  color: white;
 }
 
-.create-report-btn {
-  background-color: #007bff;
+.delete-button {
+  background-color: #f44336;
   color: white;
-  border: none;
+  display: none; /* Hidden by default */
+}
+
+.task-item:hover .delete-button, .observation-item:hover .delete-button, .image-item:hover .delete-button, .specialist-item:hover .delete-button {
+  display: inline-block; /* Show on hover */
+}
+
+.set-manager-button {
+  background-color: #ff9800;
+  color: white;
+}
+
+.create-report-button {
+  background-color: #008CBA;
+  color: white;
   padding: 10px 20px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-.specialists-section {
-  margin-top: 20px;
-}
-
-.specialists-section ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.specialists-section li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-}
-
-.specialists-section li span {
-  flex: 1;
-}
-
-.specialists-section button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 4px 8px;
-  cursor: pointer;
+  display: block;
+  margin: 20px 0;
 }
 
 .modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .modal-content {
-  background-color: white;
+  background-color: #fff;
   padding: 20px;
   border-radius: 5px;
-  width: 300px;
-  max-width: 80%;
+  text-align: center;
 }
 
-.modal-content h3 {
-  margin-top: 0;
-}
-
-.modal-content textarea,
-.modal-content input {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.modal-content button {
-  background-color: #007bff;
-  color: white;
+.modal-add-button, .modal-delete-button, .modal-close-button {
+  margin: 10px;
+  padding: 10px 20px;
   border: none;
-  padding: 10px;
   cursor: pointer;
-  margin-right: 10px;
 }
 
-.modal-content button:last-child {
-  background-color: #6c757d;
+.modal-add-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.modal-delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.modal-close-button {
+  background-color: #008CBA;
+  color: white;
+}
+
+.specialists-section {
+  margin-top: 20px;
+}
+
+.specialists-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.specialist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.submachine-image {
+  max-width: 100px;
+  height: auto;
+  margin: 10px 0;
 }

@@ -17,7 +17,7 @@ const MachineDetails = () => {
   const [deleteItem, setDeleteItem] = useState({ id: null, type: '', submachineId: null });
   const [images, setImages] = useState({});
   const [specialists, setSpecialists] = useState([]);
-  const [newSpecialist, setNewSpecialist] = useState({ name: '', email: '' });
+  const [newSpecialist, setNewSpecialist] = useState({ name: '' });
   const [showSpecialistModal, setShowSpecialistModal] = useState(false);
   const navigate = useNavigate();
 
@@ -199,15 +199,25 @@ const MachineDetails = () => {
     try {
       const response = await axios.post('http://localhost:3000/api/specialists', {
         ...newSpecialist,
-        location: 'Ciudad de México',  // Use the machine's location if available
-        status: 0,
-        machineId
+        machineId,
+        status: 0
       });
       setSpecialists((prev) => [...prev, response.data]);
-      setNewSpecialist({ name: '', email: '' });
+      setNewSpecialist({ name: '' });
       setShowSpecialistModal(false);
     } catch (error) {
       console.error('Error adding specialist:', error);
+    }
+  };
+
+  const handleSetAsManager = async (specialistId) => {
+    try {
+      await axios.put(`http://localhost:3000/api/specialists/${specialistId}`, { isManager: true });
+      setSpecialists((prev) => prev.map(specialist => 
+        specialist.id === specialistId ? { ...specialist, isManager: true } : specialist
+      ));
+    } catch (error) {
+      console.error('Error setting specialist as manager:', error);
     }
   };
 
@@ -228,25 +238,9 @@ const MachineDetails = () => {
             <tr key={submachine.id}>
               <td>{submachine.name}</td>
               <td>
-                {tasks[submachine.id]?.map((task, index) => (
-                  <div key={task.id} className="task-item">
-                    <span>{index + 1}. {task.description}</span>
-                    <input
-                      type="checkbox"
-                      checked={task.status === 1}
-                      onChange={async () => {
-                        const updatedStatus = task.status === 1 ? 0 : 1;
-                        try {
-                          await axios.put(`http://localhost:3000/api/tasks/${task.id}`, { ...task, status: updatedStatus });
-                          setTasks((prev) => ({
-                            ...prev,
-                            [submachine.id]: prev[submachine.id].map(t => t.id === task.id ? { ...t, status: updatedStatus } : t)
-                          }));
-                        } catch (error) {
-                          console.error('Error updating task status:', error);
-                        }
-                      }}
-                    />
+                {tasks[submachine.id] && tasks[submachine.id].map((task) => (
+                  <div className="task-item" key={task.id}>
+                    <span>{task.description}</span>
                     <button
                       className="delete-button"
                       onClick={() => handleDeleteTask(task.id, submachine.id)}
@@ -255,30 +249,42 @@ const MachineDetails = () => {
                     </button>
                   </div>
                 ))}
-                <button onClick={() => { setSelectedSubmachineId(submachine.id); setShowTaskModal(true); }}>
+                <button
+                  className="add-button"
+                  onClick={() => {
+                    setSelectedSubmachineId(submachine.id);
+                    setShowTaskModal(true);
+                  }}
+                >
                   Agregar Tarea
                 </button>
               </td>
               <td>
-                {observations[submachine.id]?.map((obs, index) => (
-                  <div key={obs.id} className="observation-item">
-                    <span>{index + 1}. {obs.note}</span>
+                {observations[submachine.id] && observations[submachine.id].map((observation) => (
+                  <div className="observation-item" key={observation.id}>
+                    <span>{observation.note}</span>
                     <button
                       className="delete-button"
-                      onClick={() => handleDeleteObservation(obs.id, submachine.id)}
+                      onClick={() => handleDeleteObservation(observation.id, submachine.id)}
                     >
                       Eliminar
                     </button>
                   </div>
                 ))}
-                <button onClick={() => { setSelectedSubmachineId(submachine.id); setShowObservationModal(true); }}>
+                <button
+                  className="add-button"
+                  onClick={() => {
+                    setSelectedSubmachineId(submachine.id);
+                    setShowObservationModal(true);
+                  }}
+                >
                   Agregar Observación
                 </button>
               </td>
               <td>
-                {images[submachine.id]?.map(image => (
-                  <div key={image.id} className="image-item">
-                    <img src={image.url} alt="Submachine" />
+                {images[submachine.id] && images[submachine.id].map((image) => (
+                  <div className="image-item" key={image.id}>
+                    <img src={image.url} alt="Submachine" className="submachine-image" />
                     <button
                       className="delete-button"
                       onClick={() => handleDeleteImage(image.id, submachine.id)}
@@ -287,10 +293,10 @@ const MachineDetails = () => {
                     </button>
                   </div>
                 ))}
-                {images[submachine.id]?.length === 0 && (
+                {(!images[submachine.id] || images[submachine.id].length === 0) && (
                   <input
                     type="file"
-                    onChange={(event) => handleImageUpload(event, submachine.id)}
+                    onChange={(e) => handleImageUpload(e, submachine.id)}
                   />
                 )}
               </td>
@@ -298,20 +304,41 @@ const MachineDetails = () => {
           ))}
         </tbody>
       </table>
-      <h3>Especialistas Asignados</h3>
-      <ul>
-        {specialists.map(specialist => (
-          <li key={specialist.id}>
-            {specialist.name} ({specialist.email})
-            <button onClick={() => handleDeleteSpecialist(specialist.id)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
-      <button onClick={() => setShowSpecialistModal(true)}>Agregar Especialista</button>
-      <div className="button-container">
-        <button className="create-report-button" onClick={handleCreateReport}>Crear Reporte</button>
+      <div className="specialists-section">
+        <h3>Especialistas</h3>
+        <ul className="specialists-list">
+          {specialists.map((specialist) => (
+            <li key={specialist.id} className="specialist-item">
+              <span>{specialist.name}</span>
+              <button
+                className="delete-button"
+                onClick={() => handleDeleteSpecialist(specialist.id)}
+              >
+                Eliminar
+              </button>
+              {!specialist.isManager && (
+                <button
+                  className="set-manager-button"
+                  onClick={() => handleSetAsManager(specialist.id)}
+                >
+                  Asignar como encargado
+                </button>
+              )}
+            </li>
+          ))}
+        </ul>
+        <button
+          className="add-button"
+          onClick={() => setShowSpecialistModal(true)}
+        >
+          Agregar Especialista
+        </button>
       </div>
+      <button className="create-report-button" onClick={handleCreateReport}>
+        Crear Reporte
+      </button>
 
+      {/* Modal for adding observation */}
       {showObservationModal && (
         <div className="modal">
           <div className="modal-content">
@@ -319,14 +346,19 @@ const MachineDetails = () => {
             <textarea
               value={newObservation}
               onChange={(e) => setNewObservation(e.target.value)}
-              placeholder="Ingrese la observación"
+              placeholder="Escribe una observación"
             />
-            <button onClick={handleAddObservation}>Guardar</button>
-            <button onClick={() => setShowObservationModal(false)}>Cancelar</button>
+            <button className="modal-add-button" onClick={handleAddObservation}>
+              Agregar
+            </button>
+            <button className="modal-close-button" onClick={() => setShowObservationModal(false)}>
+              Cerrar
+            </button>
           </div>
         </div>
       )}
 
+      {/* Modal for adding task */}
       {showTaskModal && (
         <div className="modal">
           <div className="modal-content">
@@ -334,14 +366,35 @@ const MachineDetails = () => {
             <textarea
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
-              placeholder="Ingrese la tarea"
+              placeholder="Describe la tarea"
             />
-            <button onClick={handleAddTask}>Guardar</button>
-            <button onClick={() => setShowTaskModal(false)}>Cancelar</button>
+            <button className="modal-add-button" onClick={handleAddTask}>
+              Agregar
+            </button>
+            <button className="modal-close-button" onClick={() => setShowTaskModal(false)}>
+              Cerrar
+            </button>
           </div>
         </div>
       )}
 
+      {/* Modal for delete confirmation */}
+      {showDeleteConfirmation && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Confirmar Eliminación</h3>
+            <p>¿Estás seguro de que deseas eliminar este ítem?</p>
+            <button className="modal-delete-button" onClick={handleDelete}>
+              Eliminar
+            </button>
+            <button className="modal-close-button" onClick={() => setShowDeleteConfirmation(false)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for adding specialist */}
       {showSpecialistModal && (
         <div className="modal">
           <div className="modal-content">
@@ -350,27 +403,14 @@ const MachineDetails = () => {
               type="text"
               value={newSpecialist.name}
               onChange={(e) => setNewSpecialist({ ...newSpecialist, name: e.target.value })}
-              placeholder="Nombre"
+              placeholder="Nombre del especialista"
             />
-            <input
-              type="email"
-              value={newSpecialist.email}
-              onChange={(e) => setNewSpecialist({ ...newSpecialist, email: e.target.value })}
-              placeholder="Email"
-            />
-            <button onClick={handleAddSpecialist}>Guardar</button>
-            <button onClick={() => setShowSpecialistModal(false)}>Cancelar</button>
-          </div>
-        </div>
-      )}
-
-      {showDeleteConfirmation && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Confirmar Eliminación</h3>
-            <p>¿Está seguro de que desea eliminar este {deleteItem.type}?</p>
-            <button onClick={handleDelete}>Sí, Eliminar</button>
-            <button onClick={() => setShowDeleteConfirmation(false)}>Cancelar</button>
+            <button className="modal-add-button" onClick={handleAddSpecialist}>
+              Agregar
+            </button>
+            <button className="modal-close-button" onClick={() => setShowSpecialistModal(false)}>
+              Cerrar
+            </button>
           </div>
         </div>
       )}
